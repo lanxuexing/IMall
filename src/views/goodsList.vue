@@ -10,15 +10,24 @@
         <div>
             <router-view></router-view>
         </div>
+        <router-link to="/cart">第一种方式：跳转到购物车界面</router-link>
+        <p class="link" v-on:click="jump">第二种方式：跳转到购物车界面</p>
     </div>
 </template>
 
 <script>
     export default {
-        
+        methods: {
+            jump() {
+                this.$router.push('/cart?goodsId=123');
+            }
+        }
     }
 </script>
 
 <style scoped>
-
+.link{
+    cursor: pointer;
+    color: #48a8ee;
+}
 </style>
