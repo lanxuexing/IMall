@@ -12,6 +12,7 @@
         </div>
         <router-link to="/cart">第一种方式：跳转到购物车界面</router-link>
         <p class="link" v-on:click="jump">第二种方式：跳转到购物车界面</p>
+        <router-link v-bind:to="{name: 'cart', params: {cartsId: 123}}">第三种方式：跳转到购物车界面</router-link>
     </div>
 </template>
 
@@ -29,5 +30,8 @@
 .link{
     cursor: pointer;
     color: #48a8ee;
+}
+.title, .image{
+    float: left;
 }
 </style>

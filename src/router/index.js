@@ -19,6 +19,15 @@ export default new Router({
     {
       path: '/goods',
       name: 'GoodsList',
+      components: {
+        default: GoodsList,
+        title: Title,
+        image: Image
+      }
+    },
+    {
+      path: '/goods',
+      name: 'GoodsList',
       component: GoodsList,
       children: [
         {
