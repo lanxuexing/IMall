@@ -2,10 +2,10 @@
   <div>
     <nav-header/>
     <nav-bread>
-        <!-- 第一种方式 -->
-        <span>Goods</span>
-        <!-- 第二种方式 -->
-        <!-- <span slot="bread">Goods</span> -->
+      <!-- 第一种方式 -->
+      <span>Goods</span>
+      <!-- 第二种方式 -->
+      <!-- <span slot="bread">Goods</span> -->
     </nav-bread>
     <div class="accessory-result-page accessory-page">
       <div class="container">
@@ -47,57 +47,15 @@
           <div class="accessory-list-wrap">
             <div class="accessory-list col-4">
               <ul>
-                <li>
+                <li v-for="(item, index) in goodsList" :key="index">
                   <div class="pic">
                     <a href="#">
-                      <img src="static/1.jpg" alt>
+                      <img v-bind:src="'static/'+item.prodcutImg" alt>
                     </a>
                   </div>
                   <div class="main">
-                    <div class="name">XX</div>
-                    <div class="price">999</div>
-                    <div class="btn-area">
-                      <a href="javascript:;" class="btn btn--m">加入购物车</a>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="pic">
-                    <a href="#">
-                      <img src="static/2.jpg" alt>
-                    </a>
-                  </div>
-                  <div class="main">
-                    <div class="name">XX</div>
-                    <div class="price">1000</div>
-                    <div class="btn-area">
-                      <a href="javascript:;" class="btn btn--m">加入购物车</a>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="pic">
-                    <a href="#">
-                      <img src="static/3.jpg" alt>
-                    </a>
-                  </div>
-                  <div class="main">
-                    <div class="name">XX</div>
-                    <div class="price">500</div>
-                    <div class="btn-area">
-                      <a href="javascript:;" class="btn btn--m">加入购物车</a>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="pic">
-                    <a href="#">
-                      <img src="static/4.jpg" alt>
-                    </a>
-                  </div>
-                  <div class="main">
-                    <div class="name">XX</div>
-                    <div class="price">2499</div>
+                    <div class="name">{{item.productName}}</div>
+                    <div class="price">{{item.prodcutPrice}}</div>
                     <div class="btn-area">
                       <a href="javascript:;" class="btn btn--m">加入购物车</a>
                     </div>
@@ -116,24 +74,35 @@
 <script>
 import "../assets/css/base.css";
 import "../assets/css/product.css";
-import NavHeader from '@/components/NavHeader'
-import NavBread from '@/components/NavBread'
-import NavFooter from '@/components/NavFooter'
+import NavHeader from "@/components/NavHeader";
+import NavBread from "@/components/NavBread";
+import NavFooter from "@/components/NavFooter";
+import axios from "axios";
 
 export default {
   data() {
-      return {
-          
-      }
+    return {
+      goodsList: []
+    };
   },
   components: {
-      NavHeader,
-      NavBread,
-      NavFooter
+    NavHeader,
+    NavBread,
+    NavFooter
+  },
+  mounted() {
+    this.getGoodsList();
+  },
+  methods: {
+    getGoodsList() {
+      axios.get("/api/goods").then(result => {
+        const res = result.data;
+        this.goodsList = res.result;
+      });
+    }
   }
 };
 </script>
 
 <style scoped>
-
 </style>
