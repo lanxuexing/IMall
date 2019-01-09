@@ -10,11 +10,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 // Mock数据服务
-const express = require('express')
-const app = express()
-const goodsData = require('../mock/goods.json')
-const apiRoutes = express.Router()
-app.use('/api', apiRoutes)
+// const express = require('express')
+// const app = express()
+// const goodsData = require('../mock/goods.json')
+// const apiRoutes = express.Router()
+// app.use('/api', apiRoutes)
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -50,11 +50,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       poll: config.dev.poll,
     },
     // Mock数据服务
-    before(app) {
-      app.get('/api/goods', (req, res) => {
-        res.json(goodsData)
-     });
-    }
+    // before(app) {
+    //   app.get('/api/goods', (req, res) => {
+    //     res.json(goodsData)
+    //  });
+    // }
   },
   plugins: [
     new webpack.DefinePlugin({
