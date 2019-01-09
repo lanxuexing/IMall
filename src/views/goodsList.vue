@@ -41,7 +41,7 @@
                 <li v-for="(item, index) in goodsList" :key="index">
                   <div class="pic">
                     <a href="#">
-                      <img v-lazy="'static/'+item.prodcutImg" alt>
+                      <img v-lazy="'static/'+item.productImage" alt>
                     </a>
                   </div>
                   <div class="main">
@@ -110,7 +110,7 @@ export default {
     getGoodsList() {
       axios.get("/goods").then(result => {
         const res = result.data;
-        this.goodsList = res.result;
+        this.goodsList = res.result.list;
       });
     },
     setPriceFilter(index) {
