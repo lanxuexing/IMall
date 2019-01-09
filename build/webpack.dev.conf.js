@@ -14,7 +14,7 @@ const portfinder = require('portfinder')
 // const app = express()
 // const goodsData = require('../mock/goods.json')
 // const apiRoutes = express.Router()
-// app.use('/api', apiRoutes)
+// app.use('/', apiRoutes)
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -51,7 +51,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
     // Mock数据服务
     // before(app) {
-    //   app.get('/api/goods', (req, res) => {
+    //   app.get('/goods', (req, res) => {
     //     res.json(goodsData)
     //  });
     // }

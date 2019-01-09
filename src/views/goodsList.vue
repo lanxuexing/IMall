@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     getGoodsList() {
-      axios.get("/api/goods").then(result => {
+      axios.get("/goods").then(result => {
         const res = result.data;
         this.goodsList = res.result;
       });
