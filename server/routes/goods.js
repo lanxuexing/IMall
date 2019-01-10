@@ -20,10 +20,10 @@ mongoose.connection.on('disconnected', () => {
 
 
 router.get('/', (req, res, next) => {
-    const page = parseInt(req.param('page'));
-    const pageSize = parseInt(req.param('pageSize'));
+    const page = parseInt(req.params('page'));
+    const pageSize = parseInt(req.params('pageSize'));
     const skip = (page - 1) * pageSize;
-    const sort = req.param('sort');
+    const sort = req.params('sort');
     const params = {};
     const goodsModel = Goods.find(params).skip(skip).limit(pageSize); // 排序并分页
     goodsModel.sort({
