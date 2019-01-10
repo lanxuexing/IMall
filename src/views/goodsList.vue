@@ -15,7 +15,7 @@
           <a href="javascript:void(0)" class="price" @click="sortGoods">
             Price
             <svg class="icon icon-arrow-short">
-              <use xlink:href="#icon-arrow-short"></use>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrow-short"></use>
             </svg>
           </a>
           <a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">Filter by</a>
@@ -53,6 +53,15 @@
                   </div>
                 </li>
               </ul>
+              <div class="load-more" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30">
+                <div class="loadding" v-show="!busy">
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -99,6 +108,7 @@ export default {
       sortFlag: true,
       page: 1,
       pageSize: 8,
+      busy: false,
     };
   },
   components: {
@@ -110,15 +120,29 @@ export default {
     this.getGoodsList();
   },
   methods: {
-    getGoodsList() {
+    getGoodsList(flag) { // 获取商品列表
       const params = {
         page: this.page,
         pageSize: this.pageSize,
         sort: this.sortFlag ? 1 : -1
       };
-      axios.get("/goods", {params: params}).then(result => {
-        const res = result.data;
-        this.goodsList = res.result.list;
+      axios.get("/goods", {params: params}).then(response => {
+        let res = response.data;
+        if (res.status == '0') {
+          if (flag) {
+            this.goodsList = this.goodsList.concat(res.result.list);
+            if (res.result.count < 8) {
+              this.busy = true;
+            } else {
+              this.busy = false;
+            }
+          } else {
+            this.goodsList = res.result.list;
+            this.budy = false;
+          }
+        } else {
+          this.goodsList = [];
+        }
       });
     },
     setPriceFilter(index) {
@@ -133,14 +157,24 @@ export default {
         this.filterBy = false;
         this.overLayFlag = false;
     },
-    sortGoods() {
+    sortGoods() { // 排序
       this.sortFlag = !this.sortFlag;
       this.getGoodsList();
+    },
+    loadMore() { // 分页懒加载
+      this.busy = true;
+      setTimeout(() => {
+        this.page++;
+        this.getGoodsList(true);
+        this.budy = false;
+      }, 500);
     }
   }
 };
 </script>
 
 <style scoped>
-
+.load-more {
+  position: relative;
+}
 </style>
