@@ -12,7 +12,7 @@
         <div class="filter-nav">
           <span class="sortby">Sort by:</span>
           <a href="javascript:void(0)" class="default cur">Default</a>
-          <a href="javascript:void(0)" class="price">
+          <a href="javascript:void(0)" class="price" @click="sortGoods">
             Price
             <svg class="icon icon-arrow-short">
               <use xlink:href="#icon-arrow-short"></use>
@@ -95,7 +95,10 @@ export default {
       ],
       priceChecked: 'all',
       filterBy: false,
-      overLayFlag: false
+      overLayFlag: false,
+      sortFlag: true,
+      page: 1,
+      pageSize: 8,
     };
   },
   components: {
@@ -108,7 +111,12 @@ export default {
   },
   methods: {
     getGoodsList() {
-      axios.get("/goods").then(result => {
+      const params = {
+        page: this.page,
+        pageSize: this.pageSize,
+        sort: this.sortFlag ? 1 : -1
+      };
+      axios.get("/goods", {params: params}).then(result => {
         const res = result.data;
         this.goodsList = res.result.list;
       });
@@ -124,6 +132,9 @@ export default {
     closePop() {
         this.filterBy = false;
         this.overLayFlag = false;
+    },
+    sortGoods() {
+      this.sortFlag = !this.sortFlag;
     }
   }
 };
