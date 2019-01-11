@@ -124,7 +124,8 @@ export default {
       const params = {
         page: this.page,
         pageSize: this.pageSize,
-        sort: this.sortFlag ? 1 : -1
+        sort: this.sortFlag ? 1 : -1,
+        priceLevel: this.priceChecked
       };
       axios.get("/goods", {params: params}).then(response => {
         let res = response.data;
@@ -147,6 +148,8 @@ export default {
     },
     setPriceFilter(index) {
         this.priceChecked = index;
+        this.page = 1;
+        this.getGoodsList();
         this.closePop();
     },
     showFilterPop() {
