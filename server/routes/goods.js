@@ -25,8 +25,8 @@ router.get('/', (req, res, next) => {
     const skip = (page - 1) * pageSize;
     const sort = req.query.sort; // 排序
     const priceLevel = req.query.priceLevel; // 条件查询
-    let startPrice = '';
-    let endPrice = '';
+    let startPrice = 0;
+    let endPrice = 5000;
     if (priceLevel != 'all') {
         switch (priceLevel) {
             case '0': startPrice = 0; endPrice = 100; break;
