@@ -25,7 +25,7 @@
           <div class="filter stopPop" id="filter" v-bind:class="{'filterby-show': filterBy}">
             <dl class="filter-price">
               <dt>Price:</dt>
-              <dd @click="priceChecked = 'all';setPriceFilter(index)">
+              <dd @click="priceChecked = 'all';setPriceFilter('all')">
                 <a href="javascript:void(0)" v-bind:class="{'cur': priceChecked == 'all'}">All</a>
               </dd>
               <dd v-for="(price, index) in priceFilter" :key="index" @click="setPriceFilter(index)">
@@ -149,7 +149,8 @@ export default {
     setPriceFilter(index) {
         this.priceChecked = index;
         this.page = 1;
-        this.getGoodsList();
+        this.getGoodsList(index == 'all' ? true : false, true);
+        if (index == 'all') { this.goodsList = []; }
         this.closePop();
     },
     showFilterPop() {
@@ -171,6 +172,13 @@ export default {
         this.getGoodsList(true);
         this.budy = false;
       }, 500);
+    },
+    arrayToHeavy(data) { // 对象数组去重复
+      let hash = {};
+      return data.reduce((preVal, curVal) => {
+        hash[curVal.productId] ? '' : hash[curVal.productId] = true && preVal.push(curVal);
+        return preVal;
+      }, []);
     }
   }
 };
