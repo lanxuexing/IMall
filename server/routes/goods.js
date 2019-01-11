@@ -32,7 +32,7 @@ router.get('/', (req, res, next) => {
             case '0': startPrice = 0; endPrice = 100; break;
             case '1': startPrice = 100; endPrice = 500; break;
             case '2': startPrice = 500; endPrice = 1000; break;
-            case '3': startPrice = 1000; endPrice = 2000; break;
+            case '3': startPrice = 1000; endPrice = 5000; break;
         }
     }
     const params = {

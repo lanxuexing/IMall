@@ -99,7 +99,7 @@ export default {
           },
           {
               startPrice: '1000',
-              endPrice: '2000'
+              endPrice: '5000'
           }
       ],
       priceChecked: 'all',
