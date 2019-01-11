@@ -54,12 +54,17 @@
                 </li>
               </ul>
               <div class="load-more" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30">
-                <div class="loadding" v-show="!busy">
+                <!-- css动画 -->
+                <!-- <div class="loadding" v-show="!busy">
                   <div class="dot"></div>
                   <div class="dot"></div>
                   <div class="dot"></div>
                   <div class="dot"></div>
                   <div class="dot"></div>
+                </div> -->
+                <!-- svg动画 -->
+                <div class="loadding" v-show="loadding">
+                  <img src="./../assets/loading-spinning-bubbles.svg" alt="">
                 </div>
               </div>
             </div>
@@ -109,6 +114,7 @@ export default {
       page: 1,
       pageSize: 8,
       busy: false,
+      loadding: false
     };
   },
   components: {
@@ -125,9 +131,11 @@ export default {
         page: this.page,
         pageSize: this.pageSize,
         sort: this.sortFlag ? 1 : -1,
-        priceLevel: this.priceChecked
+        priceLevel: this.priceChecked,
       };
+      this.loadding = true;
       axios.get("/goods", {params: params}).then(response => {
+        this.loadding = false;
         let res = response.data;
         if (res.status == '0') {
           if (flag) {
