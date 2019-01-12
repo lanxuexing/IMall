@@ -102,7 +102,7 @@ export default {
         const res = response.data;
         if (res.status == '0') {
           this.errorTip = false;
-          this.isLogin = true;
+          this.isLogin = false;
           this.nickName = res.result.userName;
         } else {
           this.errorTip = true;

@@ -60,7 +60,7 @@ router.post('/logout', (req, res, next) => {
 /**
  * 登录校验
  */
-router.get('checkLogin', (req, res, next) => {
+router.get('/checkLogin', (req, res, next) => {
   if (req.cookies.userId) {
     res.json({
       status: '0',
