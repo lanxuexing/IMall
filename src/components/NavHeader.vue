@@ -29,7 +29,7 @@
         <div class="navbar-menu-container">
           <!--<a href="/" class="navbar-link">我的账户</a>-->
           <span class="navbar-link"></span>
-          <a href="javascript:void(0)" class="navbar-link">Login</a>
+          <a href="javascript:void(0)" class="navbar-link" @click="isLogin = true">Login</a>
           <a href="javascript:void(0)" class="navbar-link">Logout</a>
           <div class="navbar-cart-container">
             <span class="navbar-cart-count"></span>
@@ -42,11 +42,11 @@
         </div>
       </div>
     </div>
-    <div class="md-modal modal-msg md-modal-transition md-show">
+    <div class="md-modal modal-msg md-modal-transition md-show" v-if="isLogin">
       <div class="md-modal-inner">
         <div class="md-top">
           <div class="md-title">Login In</div>
-          <button class="md-close">Close</button>
+          <button class="md-close" @click="isLogin = false">Close</button>
         </div>
         <div class="md-content">
           <div class="confirm-tips">
@@ -70,7 +70,7 @@
         </div>
       </div>
     </div>
-    <div class="md-overlay"></div>
+    <div class="md-overlay" v-if="isLogin" @click="isLogin = false"></div>
   </header>
 </template>
 
@@ -82,11 +82,16 @@ export default {
     return {
       userName: '',
       userPwd: '',
-      errorTip: false
+      errorTip: false,
+      isLogin: false
     }
   },
   methods: {
     login() {
+      if (!this.userName || !this.userPwd) {
+        this.errorTip = true;
+        return;
+      }
       axios.post('/users/login', {
         userName: this.userName,
         userPwd: this.userPwd
@@ -94,6 +99,7 @@ export default {
         const res = response.data;
         if (res.status == '0') {
           this.errorTip = false;
+          this.isLogin = true;
         } else {
           this.errorTip = true;
         }
