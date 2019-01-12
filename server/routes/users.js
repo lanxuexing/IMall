@@ -37,6 +37,12 @@ router.post('/login', (req, res, next) => {
             userName: userDoc.userName
           }
         });
+      } else {
+        res.json({
+          status: '1',
+          msg: 'userName or userPwd is error',
+          result: ''
+        });
       }
     }
   });

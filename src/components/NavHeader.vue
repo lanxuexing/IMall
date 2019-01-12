@@ -106,6 +106,7 @@ export default {
           this.nickName = res.result.userName;
         } else {
           this.errorTip = true;
+          console.log(res.msg);
         }
       });
     },
