@@ -98,7 +98,7 @@
       </p>
       <div slot="action">
         <a href="javascript:void(0);" class="btn btn--m" @click="modalShowCart = false">继续购物</a>
-        <router-link href="javascript:void(0);" to="/cart">查看购物车</router-link>
+        <router-link class="btn btn--m" href="javascript:void(0);" to="/cart">查看购物车</router-link>
       </div>
     </modal>
     <nav-footer/>
@@ -226,18 +226,17 @@ export default {
         })
         .then(res => {
           if (res.status == 0) {
-            console.log(res.message);
+            this.modalShow = false;
             this.modalShowCart = true;
           } else {
-            console.log(res.message);
             this.modalShow = true;
           }
         });
     },
     // 关闭弹出框
     closeModal() {
-      this.modalShow = true;
-      this.modalShowCart = true;
+      this.modalShow = false;
+      this.modalShowCart = false;
     },
     // 对象数组去重复
     arrayToHeavy(data) {
