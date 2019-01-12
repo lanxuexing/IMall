@@ -83,7 +83,7 @@ router.post('/addCart', (req, res, next) => {
             });
         } else {
             if (userDoc) {
-                const goodsItem = '';
+                let goodsItem = '';
                 userDoc.cartList.forEach(item => { // 如果商品已经存在，则更新商品数量+1
                     if (item.productId == productId) {
                         goodsItem = item;
