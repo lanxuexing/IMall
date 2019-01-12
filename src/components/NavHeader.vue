@@ -27,10 +27,9 @@
       </div>
       <div class="navbar-right-container" style="display: flex;">
         <div class="navbar-menu-container">
-          <!--<a href="/" class="navbar-link">我的账户</a>-->
-          <span class="navbar-link"></span>
-          <a href="javascript:void(0)" class="navbar-link" @click="isLogin = true">Login</a>
-          <a href="javascript:void(0)" class="navbar-link">Logout</a>
+          <span class="navbar-link" v-if="nickName">{{nickName}}</span>
+          <a href="javascript:void(0)" class="navbar-link" @click="isLogin = true" v-if="!nickName">Login</a>
+          <a href="javascript:void(0)" class="navbar-link" @click="isLogin = true" v-if="nickName">Logout</a>
           <div class="navbar-cart-container">
             <span class="navbar-cart-count"></span>
             <a class="navbar-link navbar-cart-link" href="/#/cart">
@@ -83,7 +82,8 @@ export default {
       userName: '',
       userPwd: '',
       errorTip: false,
-      isLogin: false
+      isLogin: false,
+      nickName: '' // 用户昵称
     }
   },
   methods: {
@@ -100,6 +100,7 @@ export default {
         if (res.status == '0') {
           this.errorTip = false;
           this.isLogin = true;
+          this.nickName = res.result.userName;
         } else {
           this.errorTip = true;
         }
