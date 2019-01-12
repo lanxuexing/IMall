@@ -28,7 +28,12 @@
       <div class="navbar-right-container" style="display: flex;">
         <div class="navbar-menu-container">
           <span class="navbar-link" v-if="nickName">{{nickName}}</span>
-          <a href="javascript:void(0)" class="navbar-link" @click="isLogin = true" v-if="!nickName">Login</a>
+          <a
+            href="javascript:void(0)"
+            class="navbar-link"
+            @click="isLogin = true"
+            v-if="!nickName"
+          >Login</a>
           <a href="javascript:void(0)" class="navbar-link" @click="logout" v-if="nickName">Logout</a>
           <div class="navbar-cart-container">
             <span class="navbar-cart-count"></span>
@@ -55,11 +60,23 @@
             <ul>
               <li class="regi_form_input">
                 <i class="icon IconPeople"></i>
-                <input type="text" tabindex="1" name="loginname" v-model="userName" class="regi_login_input">
+                <input
+                  type="text"
+                  tabindex="1"
+                  name="loginname"
+                  v-model="userName"
+                  class="regi_login_input"
+                >
               </li>
               <li class="regi_form_input noMargin">
                 <i class="icon IconPwd"></i>
-                <input type="text" tabindex="2" name="password" v-model="userPwd" class="regi_login_input">
+                <input
+                  type="text"
+                  tabindex="2"
+                  name="password"
+                  v-model="userPwd"
+                  class="regi_login_input"
+                >
               </li>
             </ul>
           </div>
@@ -74,58 +91,63 @@
 </template>
 
 <script>
-import '../assets/css/login.css';
-import axios from 'axios';
+import "../assets/css/login.css";
+import axios from "axios";
 export default {
   data() {
     return {
-      userName: '',
-      userPwd: '',
+      userName: "",
+      userPwd: "",
       errorTip: false,
       isLogin: false,
-      nickName: '' // 用户昵称
-    }
+      nickName: "" // 用户昵称
+    };
   },
   mounted() {
     this.checkLogin();
   },
   methods: {
-    login() { // 登录
+    login() {
+      // 登录
       if (!this.userName || !this.userPwd) {
         this.errorTip = true;
         return;
       }
-      axios.post('/users/login', {
-        userName: this.userName,
-        userPwd: this.userPwd
-      }).then(response => {
+      axios
+        .post("/users/login", {
+          userName: this.userName,
+          userPwd: this.userPwd
+        })
+        .then(response => {
+          const res = response.data;
+          if (res.status == "0") {
+            this.errorTip = false;
+            this.isLogin = false;
+            this.nickName = res.result.userName;
+          } else {
+            this.errorTip = true;
+            console.log(res.msg);
+          }
+        });
+    },
+    logout() {
+      // 退出
+      axios.post("/users/logout").then(response => {
         const res = response.data;
-        if (res.status == '0') {
-          this.errorTip = false;
-          this.isLogin = false;
-          this.nickName = res.result.userName;
-        } else {
-          this.errorTip = true;
-          console.log(res.msg);
+        if (res.status == "0") {
+          this.nickName = "";
         }
       });
     },
-    logout() { // 退出
-      axios.post('/users/logout').then(response => {
+    checkLogin() {
+      // 登录校验
+      axios.get("/users/checkLogin").then(response => {
         const res = response.data;
-        if (res.status == '0') {
-          this.nickName = '';
-        }
-      });
-    },
-    checkLogin() { // 登录校验
-      axios.get('/users/checkLogin').then(response => {
-        const res = response.data;
-        if (res.status == '0') {
+        if (res.status == "0") {
           this.nickName = res.result;
         }
       });
     }
   }
-}
+};
 </script>
