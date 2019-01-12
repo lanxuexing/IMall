@@ -1,5 +1,3 @@
-module.exports = mongoose.model('Good', productSchema);
-
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
