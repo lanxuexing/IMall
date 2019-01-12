@@ -134,7 +134,7 @@ export default {
         priceLevel: this.priceChecked,
       };
       this.loadding = true;
-      axios.get("/goods", {params: params}).then(response => {
+      axios.get("/goods/list", {params: params}).then(response => {
         this.loadding = false;
         let res = response.data;
         if (res.status == '0') {

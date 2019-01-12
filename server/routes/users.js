@@ -26,6 +26,10 @@ router.post('/login', (req, res, next) => {
           path: '/',
           maxAge: 1000 * 60 * 60
         });
+        res.cookie('userName', userDoc.userName, { // 设置cookie
+          path: '/',
+          maxAge: 1000 * 60 * 60
+        });
         res.json({
           status: '0',
           msg: 'success',
@@ -51,6 +55,25 @@ router.post('/logout', (req, res, next) => {
     msg: 'success',
     result: 'logout success'
   });
+});
+
+/**
+ * 登录校验
+ */
+router.get('checkLogin', (req, res, next) => {
+  if (req.cookies.userId) {
+    res.json({
+      status: '0',
+      msg: '',
+      result: req.cookies.userName || ''
+    });
+  } else {
+    res.json({
+      status: '1',
+      msg: 'you are not login',
+      result: ''
+    });
+  }
 });
 
 module.exports = router;

@@ -86,6 +86,9 @@ export default {
       nickName: '' // 用户昵称
     }
   },
+  mounted() {
+    this.checkLogin();
+  },
   methods: {
     login() { // 登录
       if (!this.userName || !this.userPwd) {
@@ -111,6 +114,14 @@ export default {
         const res = response.data;
         if (res.status == '0') {
           this.nickName = '';
+        }
+      });
+    },
+    checkLogin() { // 登录校验
+      axios.get('/users/checkLogin').then(response => {
+        const res = response.data;
+        if (res.status == '0') {
+          this.nickName = res.result;
         }
       });
     }

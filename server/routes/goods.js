@@ -22,7 +22,7 @@ mongoose.connection.on('disconnected', () => {
 /**
  * 查询商品信息
  */
-router.get('/', (req, res, next) => {
+router.get('/list', (req, res, next) => {
     const page = parseInt(req.query.page); // 分页
     const pageSize = parseInt(req.query.pageSize);
     const skip = (page - 1) * pageSize;

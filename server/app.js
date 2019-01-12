@@ -21,6 +21,22 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function(req, res, next) {
+  if (req.cookies.userId) {
+    next();
+  } else {
+    if (req.originalUrl == '/users/login' || req.originalUrl == '/users/logout' || req.path.indexOf('/goods/list') > -1) {
+      next();
+    } else {
+      res.json({
+        status: '10001',
+        msg: 'you are not login',
+        result: ''
+      });
+    }
+  }
+});
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 // 商品
