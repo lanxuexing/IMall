@@ -224,7 +224,8 @@ export default {
         .post("/goods/addCart", {
           productId: productId
         })
-        .then(res => {
+        .then(response => {
+          const res = response.data;
           if (res.status == 0) {
             this.modalShow = false;
             this.modalShowCart = true;
