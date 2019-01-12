@@ -29,7 +29,7 @@
         <div class="navbar-menu-container">
           <span class="navbar-link" v-if="nickName">{{nickName}}</span>
           <a href="javascript:void(0)" class="navbar-link" @click="isLogin = true" v-if="!nickName">Login</a>
-          <a href="javascript:void(0)" class="navbar-link" @click="isLogin = true" v-if="nickName">Logout</a>
+          <a href="javascript:void(0)" class="navbar-link" @click="logout" v-if="nickName">Logout</a>
           <div class="navbar-cart-container">
             <span class="navbar-cart-count"></span>
             <a class="navbar-link navbar-cart-link" href="/#/cart">
@@ -87,7 +87,7 @@ export default {
     }
   },
   methods: {
-    login() {
+    login() { // 登录
       if (!this.userName || !this.userPwd) {
         this.errorTip = true;
         return;
@@ -103,6 +103,14 @@ export default {
           this.nickName = res.result.userName;
         } else {
           this.errorTip = true;
+        }
+      });
+    },
+    logout() { // 退出
+      axios.post('/users/logout').then(response => {
+        const res = response.data;
+        if (res.status == '0') {
+          this.nickName = '';
         }
       });
     }
