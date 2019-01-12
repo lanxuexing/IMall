@@ -42,5 +42,63 @@
         </div>
       </div>
     </div>
+    <div class="md-modal modal-msg md-modal-transition md-show">
+      <div class="md-modal-inner">
+        <div class="md-top">
+          <div class="md-title">Login In</div>
+          <button class="md-close">Close</button>
+        </div>
+        <div class="md-content">
+          <div class="confirm-tips">
+            <div class="error-wrap">
+              <span class="error error-show" v-show="errorTip">userName or password error</span>
+            </div>
+            <ul>
+              <li class="regi_form_input">
+                <i class="icon IconPeople"></i>
+                <input type="text" tabindex="1" name="loginname" v-model="userName" class="regi_login_input">
+              </li>
+              <li class="regi_form_input noMargin">
+                <i class="icon IconPwd"></i>
+                <input type="text" tabindex="2" name="password" v-model="userPwd" class="regi_login_input">
+              </li>
+            </ul>
+          </div>
+          <div class="login-wrap">
+            <a href="javascript:void(0)" class="btn-login" @click="login">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="md-overlay"></div>
   </header>
 </template>
+
+<script>
+import '../assets/css/login.css';
+import axios from 'axios';
+export default {
+  data() {
+    return {
+      userName: '',
+      userPwd: '',
+      errorTip: false
+    }
+  },
+  methods: {
+    login() {
+      axios.post('/users/login', {
+        userName: this.userName,
+        userPwd: this.userPwd
+      }).then(response => {
+        const res = response.data;
+        if (res.status == '0') {
+          this.errorTip = false;
+        } else {
+          this.errorTip = true;
+        }
+      });
+    }
+  }
+}
+</script>
