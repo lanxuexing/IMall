@@ -72,7 +72,7 @@ router.get('/list', (req, res, next) => {
  */
 router.post('/addCart', (req, res, next) => {
     const userId = '100000077'; // 这里先写死用户ID，之后再调整成动态的
-    const productId = res.body.productId;
+    const productId = req.body.productId;
     User.findOne({
         userId: userId
     }, (err, userDoc) => {
