@@ -223,7 +223,7 @@ export default {
       this.productId = productId
     },
     deleteCart() {
-      axios.post("/users/cart/del", { productId: this.productId }).then(response => {
+      axios.post("/users/delCart", { productId: this.productId }).then(response => {
         const res = response.data;
         if (res.status == "0") {
           this.modalConfirm = false;
