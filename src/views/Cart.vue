@@ -128,7 +128,7 @@
                 </div>
                 <div class="cart-tab-5">
                   <div class="cart-item-opration">
-                    <a href="javascript:;" class="item-edit-btn">
+                    <a href="javascript:;" class="item-edit-btn" @click="deleteCartConfirm(item.productId)">
                       <svg class="icon icon-del">
                         <use xlink:href="#icon-del"></use>
                       </svg>
@@ -166,6 +166,13 @@
         </div>
       </div>
     </div>
+    <Modal :show="modalConfirm" @dismiss="closeModal">
+      <p slot="message">您确认要删除该商品吗？</p>
+      <div slot="action">
+        <a href="javascript:void(0);" class="btn btn-mm" @click="deleteCart">确认</a>
+        <a href="javascript:void(0);" class="btn btn-mm" @click="modalConfirm = false">关闭</a>
+      </div>
+    </Modal>
     <nav-footer/>
   </div>
 </template>
@@ -180,7 +187,9 @@ import axios from "axios";
 export default {
   data() {
     return {
-      cartList: []
+      cartList: [],
+      modalConfirm: false,
+      productId: ''
     };
   },
   mounted() {
@@ -201,6 +210,15 @@ export default {
           this.cartList = res.result;
         }
       });
+    },
+    closeModal() {
+      this.modalConfirm = false;
+    },
+    deleteCartConfirm(productId) {
+      this.modalConfirm = true;
+    },
+    deleteCart() {
+
     }
   }
 };
