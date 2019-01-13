@@ -106,4 +106,35 @@ router.get('/cartList', (req, res, next) => {
   });
 });
 
+/**
+ * 删除用户下的商品
+ */
+router.post('/cart/del', (req, res, next) => {
+  const userId = req.cookies.userId;
+  const productId = req.body.productId;
+  User.update({userId: userId}, {
+    $pull: {
+      'cartList': {
+        'productId': productId
+      }
+    }
+  }).then((err, doc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: res.message,
+        result: ''
+      });
+    } else {
+      if (doc) {
+        res.json({
+          status: '0',
+          msg: 'success',
+          result: 'delere success'
+        });
+      }
+    }
+  });
+});
+
 module.exports = router;

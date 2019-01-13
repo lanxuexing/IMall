@@ -128,7 +128,11 @@
                 </div>
                 <div class="cart-tab-5">
                   <div class="cart-item-opration">
-                    <a href="javascript:;" class="item-edit-btn" @click="deleteCartConfirm(item.productId)">
+                    <a
+                      href="javascript:;"
+                      class="item-edit-btn"
+                      @click="deleteCartConfirm(item.productId)"
+                    >
                       <svg class="icon icon-del">
                         <use xlink:href="#icon-del"></use>
                       </svg>
@@ -189,7 +193,7 @@ export default {
     return {
       cartList: [],
       modalConfirm: false,
-      productId: ''
+      productId: ""
     };
   },
   mounted() {
@@ -218,7 +222,17 @@ export default {
       this.modalConfirm = true;
     },
     deleteCart() {
-
+      axios
+        .post("/users/cart/del", {
+          productId: productId
+        })
+        .then(response => {
+          const res = response.data;
+          if (res.status == "0") {
+            this.modalConfirm = false;
+            this.init();
+          }
+        });
     }
   }
 };
