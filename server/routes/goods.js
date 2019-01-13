@@ -100,7 +100,7 @@ router.post('/addCart', (req, res, next) => {
                         } else {
                             res.json({
                                 status: '0',
-                                msg: '添加成功',
+                                msg: '更新成功',
                                 result: 'success'
                             });
                         }

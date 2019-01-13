@@ -118,7 +118,7 @@ router.post('/cart/del', (req, res, next) => {
         'productId': productId
       }
     }
-  }).then((err, doc) => {
+  }, (err, doc) => {
     if (err) {
       res.json({
         status: '1',

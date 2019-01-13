@@ -220,19 +220,16 @@ export default {
     },
     deleteCartConfirm(productId) {
       this.modalConfirm = true;
+      this.productId = productId
     },
     deleteCart() {
-      axios
-        .post("/users/cart/del", {
-          productId: productId
-        })
-        .then(response => {
-          const res = response.data;
-          if (res.status == "0") {
-            this.modalConfirm = false;
-            this.init();
-          }
-        });
+      axios.post("/users/cart/del", { productId: this.productId }).then(response => {
+        const res = response.data;
+        if (res.status == "0") {
+          this.modalConfirm = false;
+          this.init();
+        }
+      });
     }
   }
 };
