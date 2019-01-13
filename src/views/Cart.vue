@@ -195,6 +195,7 @@ export default {
   methods: {
     init() {
       axios.get("/users/cartList").then(response => {
+        console.log(response);
         const res = response.data;
         if (res.status == "0") {
           this.cartList = res.result;

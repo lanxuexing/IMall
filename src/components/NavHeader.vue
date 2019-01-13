@@ -76,6 +76,7 @@
                   name="password"
                   v-model="userPwd"
                   class="regi_login_input"
+                  @keyup.enter="login"
                 >
               </li>
             </ul>

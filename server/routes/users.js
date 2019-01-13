@@ -22,7 +22,7 @@ router.post('/login', (req, res, next) => {
       });
     } else {
       if (userDoc) {
-        res.cookie('userId', userDoc.userID, { // 设置cookie
+        res.cookie('userId', userDoc.userId, { // 设置cookie
           path: '/',
           maxAge: 1000 * 60 * 60
         });
