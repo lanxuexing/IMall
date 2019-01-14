@@ -220,36 +220,45 @@ export default {
     },
     deleteCartConfirm(productId) {
       this.modalConfirm = true;
-      this.productId = productId
+      this.productId = productId;
     },
-    deleteCart() { // 删除商品
-      axios.post("/users/delCart", { productId: this.productId }).then(response => {
-        const res = response.data;
-        if (res.status == "0") {
-          this.modalConfirm = false;
-          this.init();
-        }
-      });
+    deleteCart() {
+      // 删除商品
+      axios
+        .post("/users/delCart", { productId: this.productId })
+        .then(response => {
+          const res = response.data;
+          if (res.status == "0") {
+            this.modalConfirm = false;
+            this.init();
+          }
+        });
     },
-    editCart(flag, item) { // 编辑商品的数量
-      if (flag == 'add') {
+    editCart(flag, item) {
+      // 编辑商品的数量
+      if (flag == "add") {
         item.productNum++;
-      } else {
+      } else if (flag == "minu") {
         if (item.productNum <= 1) {
           return;
         } else {
           item.productNum--;
         }
+      } else if (flag == "checked") {
+        item.checked = "1";
       }
-      axios.post('/users/cartEdit', {
-        productId: item.productId,
-        productNum: item.productNum
-      }).then(response => {
-        const res = response.data;
-        if (res.status == '0') {
-          console.log(res.result);
-        }
-      });
+      axios
+        .post("/users/cartEdit", {
+          productId: item.productId,
+          productNum: item.productNum,
+          checked: item.checked
+        })
+        .then(response => {
+          const res = response.data;
+          if (res.status == "0") {
+            console.log(res.result);
+          }
+        });
     }
   }
 };
