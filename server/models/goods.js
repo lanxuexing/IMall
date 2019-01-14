@@ -5,6 +5,7 @@ const productSchema = new Schema({
     "productId": String,
     "productName": String,
     "salePrice": Number,
+    "checked": String,
     "productImage": String,
     "productNum": String
 });
