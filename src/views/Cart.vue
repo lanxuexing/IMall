@@ -245,7 +245,7 @@ export default {
           item.productNum--;
         }
       } else if (flag == "checked") {
-        item.checked = "1";
+        item.checked == "1" ? item.checked = '-1' : item.checked = '1';
       }
       axios
         .post("/users/cartEdit", {
