@@ -144,21 +144,21 @@ router.post('/cartEdit', (req, res, next) => {
   const productNum = req.body.productNum;
   User.update({userId: userId, 'cartList.productId': productId}, {
     'cartList.$.productNum': productNum
+  }, (err, doc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: res.message,
+        result: ''
+      });
+    } else {
+      res.json({
+        status: '0',
+        msg: 'success',
+        result: 'update success'
+      });
+    }
   });
-}, (err, doc) => {
-  if (err) {
-    res.json({
-      status: '1',
-      msg: res.message,
-      result: ''
-    });
-  } else {
-    res.json({
-      status: '0',
-      msg: 'success',
-      result: 'update success'
-    });
-  }
 });
 
 module.exports = router;
