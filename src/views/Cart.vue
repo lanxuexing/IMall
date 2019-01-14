@@ -160,7 +160,7 @@
             <div class="cart-foot-r">
               <div class="item-total">
                 Item total:
-                <span class="total-price">{{totalPrice}}</span>
+                <span class="total-price">{{totalPrice | currency('¥')}}</span>
               </div>
               <div class="btn-wrap">
                 <a class="btn btn--red">Checkout</a>
@@ -187,6 +187,7 @@ import NavHeader from "@/components/NavHeader";
 import NavBread from "@/components/NavBread";
 import Modal from "@/components/Modal";
 import NavFooter from "@/components/NavFooter";
+// import { currency } from '../utils/currency';
 import axios from "axios";
 export default {
   data() {
@@ -228,6 +229,9 @@ export default {
       return money;
     }
   },
+  // filters: {
+  //   currency: currency
+  // },
   methods: {
     init() {
       axios.get("/users/cartList").then(response => {

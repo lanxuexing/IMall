@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import VueLazyload from 'vue-lazyload'
 import infiniteScroll from 'vue-infinite-scroll'
+import { currency } from './utils/currency'
 
 import './assets/css/base.css'
 import './assets/css/checkout.css'
@@ -21,6 +22,8 @@ Vue.use(VueLazyload, {
 })
 // 分页
 Vue.use(infiniteScroll)
+// 格式化金额管道
+Vue.filter('currency', currency);
 
 
 /* eslint-disable no-new */
