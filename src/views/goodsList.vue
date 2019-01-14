@@ -49,7 +49,7 @@
                   </div>
                   <div class="main">
                     <div class="name">{{item.productName}}</div>
-                    <div class="price">¥{{item.salePrice}}</div>
+                    <div class="price">{{item.salePrice | currency('¥')}}</div>
                     <div class="btn-area" @click="addCart(item.productId)">
                       <a href="javascript:;" class="btn btn--m">加入购物车</a>
                     </div>
