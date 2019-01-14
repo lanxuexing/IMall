@@ -166,7 +166,7 @@ router.post('/cartEdit', (req, res, next) => {
 // 全选商品
 router.post('/editCheckAll', (req, res, next) => {
   const userId = req.body.userId;
-  const checked = req.body.checkAll ? '1' : '0';
+  const checkAll = req.body.checkAll ? '1' : '0';
   User.findOne({userId: userId}, (err, userDoc) => {
     if (err) {
       res.json({
