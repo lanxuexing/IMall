@@ -116,9 +116,9 @@
                   <div class="item-quantity">
                     <div class="select-self select-self-open">
                       <div class="select-self-area">
-                        <a class="input-sub">-</a>
+                        <a class="input-sub" @click="editCart('minu', item)">-</a>
                         <span class="select-ipt">{{item.productNum}}</span>
-                        <a class="input-add">+</a>
+                        <a class="input-add" @click="editCart('add', item)">+</a>
                       </div>
                     </div>
                   </div>
@@ -222,12 +222,32 @@ export default {
       this.modalConfirm = true;
       this.productId = productId
     },
-    deleteCart() {
+    deleteCart() { // 删除商品
       axios.post("/users/delCart", { productId: this.productId }).then(response => {
         const res = response.data;
         if (res.status == "0") {
           this.modalConfirm = false;
           this.init();
+        }
+      });
+    },
+    editCart(flag, item) { // 编辑商品的数量
+      if (flag == 'add') {
+        item.productNum++;
+      } else {
+        if (item.productNum <= 1) {
+          return;
+        } else {
+          item.productNum--;
+        }
+      }
+      axios.post('/users/cartEdit', {
+        productId: item.productId,
+        productNum: item.productNum
+      }).then(response => {
+        const res = response.data;
+        if (res.status == '0') {
+          console.log(res.result);
         }
       });
     }

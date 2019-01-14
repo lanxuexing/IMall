@@ -137,4 +137,28 @@ router.post('/delCart', (req, res, next) => {
   });
 });
 
+// 编辑商品数量
+router.post('/cartEdit', (req, res, next) => {
+  const userId = req.cookies.userId;
+  const productId = req.body.productId;
+  const productNum = req.body.productNum;
+  User.update({userId: userId, 'cartList.productId': productId}, {
+    'cartList.$.productNum': productNum
+  });
+}, (err, doc) => {
+  if (err) {
+    res.json({
+      status: '1',
+      msg: res.message,
+      result: ''
+    });
+  } else {
+    res.json({
+      status: '0',
+      msg: 'success',
+      result: 'update success'
+    });
+  }
+});
+
 module.exports = router;
