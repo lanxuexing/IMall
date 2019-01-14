@@ -147,8 +147,8 @@
           <div class="cart-foot-inner">
             <div class="cart-foot-l">
               <div class="item-all-check">
-                <a href="javascipt:;">
-                  <span class="checkbox-btn item-check-btn">
+                <a href="javascipt:;" @click="toggleCheckAll">
+                  <span class="checkbox-btn item-check-btn" v-bind:class="{'check': checkAllFlag}">
                     <svg class="icon icon-ok">
                       <use xlink:href="#icon-ok"></use>
                     </svg>
@@ -193,7 +193,8 @@ export default {
     return {
       cartList: [],
       modalConfirm: false,
-      productId: ""
+      productId: "",
+      checkAllFlag: false
     };
   },
   mounted() {
@@ -259,6 +260,20 @@ export default {
             console.log(res.result);
           }
         });
+    },
+    toggleCheckAll() { // 全选
+      this.checkAllFlag = !this.checkAllFlag;
+      this.cartList.forEach(item => {
+        item.checked = this.checkAllFlag;
+      });
+      axios.post('/users/editCheckAll', {
+        checkAll: this.checkAllFlag
+      }).then(response => {
+        const res = response.data;
+        if (res.status == '0') {
+          console.log(res.result);
+        }
+      });
     }
   }
 };

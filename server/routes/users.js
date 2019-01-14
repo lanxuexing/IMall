@@ -163,4 +163,40 @@ router.post('/cartEdit', (req, res, next) => {
   });
 });
 
+// 全选商品
+router.post('/editCheckAll', (req, res, next) => {
+  const userId = req.body.userId;
+  const checked = req.body.checkAll ? '1' : '0';
+  User.findOne({userId: userId}, (err, userDoc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: res.message,
+        result: ''
+      });
+    } else {
+      if (userDoc) {
+        userDoc.cartList.forEach(item => {
+          item.checked = checkAll;
+        });
+        userDoc.save((err, doc) => {
+          if (err) {
+            res.json({
+              status: '1',
+              msg: res.message,
+              result: ''
+            });
+          } else {
+            res.json({
+              status: '0',
+              message: 'success',
+              result: 'checkAll success'
+            });
+          }
+        });
+      }
+    }
+  });
+});
+
 module.exports = router;
