@@ -160,7 +160,7 @@
             <div class="cart-foot-r">
               <div class="item-total">
                 Item total:
-                <span class="total-price">500</span>
+                <span class="total-price">{{totalPrice}}</span>
               </div>
               <div class="btn-wrap">
                 <a class="btn btn--red">Checkout</a>
@@ -193,8 +193,7 @@ export default {
     return {
       cartList: [],
       modalConfirm: false,
-      productId: "",
-      checkAllFlag: false
+      productId: ""
     };
   },
   mounted() {
@@ -205,6 +204,29 @@ export default {
     NavBread,
     Modal,
     NavFooter
+  },
+  computed: {
+    checkAllFlag() {
+      return this.checkCount == this.cartList.length;
+    },
+    checkCount() {
+      let num = 0;
+      this.cartList.forEach(item => {
+        if (item.checked == '1') {
+          num++;
+        }
+      });
+      return num;
+    },
+    totalPrice() {
+      let money = 0;
+      this.cartList.forEach(item => {
+        if (item.checked == '1') {
+          money += parseFloat(item.salePrice) * parseInt(item.productNum);
+        }
+      });
+      return money;
+    }
   },
   methods: {
     init() {
@@ -262,12 +284,12 @@ export default {
         });
     },
     toggleCheckAll() { // 全选
-      this.checkAllFlag = !this.checkAllFlag;
+      const checked = !this.checkAllFlag;
       this.cartList.forEach(item => {
-        item.checked = this.checkAllFlag;
+        item.checked = checked ? '1' : '0';
       });
       axios.post('/users/editCheckAll', {
-        checkAll: this.checkAllFlag
+        checkAll: checked
       }).then(response => {
         const res = response.data;
         if (res.status == '0') {
