@@ -113,7 +113,7 @@
           <div class="addr-list-wrap">
             <div class="addr-list">
               <ul>
-                <li v-for="(item, index) in addressList" :key="index">
+                <li v-for="(item, index) in addressListFilter" :key="index">
                   <dl>
                     <dt>{{item.userName}}</dt>
                     <dd class="address">{{item.streetName}}</dd>
@@ -147,7 +147,7 @@
             </div>
 
             <div class="shipping-addr-more">
-              <a class="addr-more-btn up-down-btn" href="javascript:;">
+              <a class="addr-more-btn up-down-btn" href="javascript:;" v-bind:class="{'open': limit > 3}" @click="expand">
                 more
                 <i class="i-up-down">
                   <i class="i-up-down-l"></i>
@@ -198,6 +198,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      limit: 3,
       addressList: []
     };
   },
@@ -210,6 +211,11 @@ export default {
   mounted() {
     this.init();
   },
+  computed: {
+    addressListFilter() {
+      return this.addressList.slice(0, this.limit);
+    }
+  },
   methods: {
     init() {
       axios.get("/users/addressList").then(response => {
@@ -219,6 +225,14 @@ export default {
           this.addressList = data;
         }
       });
+    },
+    //  展开更多地址
+    expand() {
+      if (this.limit == 3) {
+        this.limit = this.addressList.length;
+      } else {
+        this.limit = 3;
+      }
     }
   }
 };
