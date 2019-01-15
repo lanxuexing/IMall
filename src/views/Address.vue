@@ -113,11 +113,11 @@
           <div class="addr-list-wrap">
             <div class="addr-list">
               <ul>
-                <li>
+                <li v-for="(item, index) in addressList" :key="index">
                   <dl>
-                    <dt>XXX</dt>
-                    <dd class="address">朝阳公园</dd>
-                    <dd class="tel">10000000000</dd>
+                    <dt>{{item.userName}}</dt>
+                    <dd class="address">{{item.streetName}}</dd>
+                    <dd class="tel">{{item.tel}}</dd>
                   </dl>
                   <div class="addr-opration addr-del">
                     <a href="javascript:;" class="addr-del-btn">
@@ -197,7 +197,9 @@ import NavFooter from "@/components/NavFooter";
 import axios from "axios";
 export default {
   data() {
-    return {};
+    return {
+      addressList: []
+    };
   },
   components: {
     NavHeader,
@@ -210,11 +212,11 @@ export default {
   },
   methods: {
     init() {
-      axios.get('/users/addressList').then(response => {
+      axios.get("/users/addressList").then(response => {
         const res = response.data;
-        if (res.status == '0') {
+        if (res.status == "0") {
           const data = res.result;
-          console.log(data);
+          this.addressList = data;
         }
       });
     }
