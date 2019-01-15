@@ -113,7 +113,7 @@
           <div class="addr-list-wrap">
             <div class="addr-list">
               <ul>
-                <li v-for="(item, index) in addressListFilter" :key="index">
+                <li v-for="(item, index) in addressListFilter" :key="index" v-bind:class="{'check': checkIndex == index}" @click="checkIndex=index">
                   <dl>
                     <dt>{{item.userName}}</dt>
                     <dd class="address">{{item.streetName}}</dd>
@@ -199,7 +199,8 @@ export default {
   data() {
     return {
       limit: 3,
-      addressList: []
+      addressList: [],
+      checkIndex: 0,
     };
   },
   components: {
