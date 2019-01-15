@@ -205,8 +205,20 @@ export default {
     Modal,
     NavFooter
   },
-  mounted() {},
-  methods: {}
+  mounted() {
+    this.init();
+  },
+  methods: {
+    init() {
+      axios.get('/users/addressList').then(response => {
+        const res = response.data;
+        if (res.status == '0') {
+          const data = res.result;
+          console.log(data);
+        }
+      });
+    }
+  }
 };
 </script>
 
