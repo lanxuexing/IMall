@@ -195,7 +195,7 @@
             </div>
           </div>
           <div class="next-btn-wrap">
-            <a class="btn btn--m btn--red">Next</a>
+            <router-link class="btn btn--m btn--red" to="/orderConfirm">NEXT</router-link>
           </div>
         </div>
       </div>
@@ -283,7 +283,6 @@ export default {
     },
     // 删除地址
     deleteAddress() {
-      this.modalConfirm = false;
       axios.post('/users/deleteAddress', {
         addressId: this.addressId
       }).then(response => {
