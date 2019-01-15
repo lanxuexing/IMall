@@ -290,6 +290,7 @@ export default {
         const res = response.data;
         if (res.status == 0) {
           console.log(res.result);
+          this.init();
         }
       });
     }
