@@ -117,7 +117,7 @@
                   v-for="(item, index) in addressListFilter"
                   :key="index"
                   v-bind:class="{'check': checkIndex == index}"
-                  @click="checkIndex=index"
+                  @click="checkIndex = index;selectAddressId = item.addressId"
                 >
                   <dl>
                     <dt>{{item.userName}}</dt>
@@ -195,7 +195,7 @@
             </div>
           </div>
           <div class="next-btn-wrap">
-            <router-link class="btn btn--m btn--red" to="/orderConfirm">NEXT</router-link>
+            <router-link class="btn btn--m btn--red" v-bind:to="{path: '/orderConfirm', query: {'addressId': selectAddressId}}">NEXT</router-link>
           </div>
         </div>
       </div>
@@ -224,7 +224,8 @@ export default {
       addressList: [],
       checkIndex: 0,
       modalConfirm: false,
-      addressId: ''
+      addressId: '',
+      selectAddressId: ''
     };
   },
   components: {
@@ -248,6 +249,7 @@ export default {
         if (res.status == "0") {
           const data = res.result;
           this.addressList = data;
+          this.selectAddressId = data[this.checkIndex].addressId;
         }
       });
     },
