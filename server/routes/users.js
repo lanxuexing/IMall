@@ -221,4 +221,55 @@ router.get('/addressList', (req, res, next) => {
   });
 });
 
+// 设置默认收货地址
+router.post('/setDefaultAddress', (req, res, next) => {
+  const userId = req.cookies.userId;
+  const addressId = req.body.addressId;
+  if (!addressId) {
+    res.json({
+      status: '100003',
+      msg: 'addressId is null',
+      result: ''
+    });
+  } else {
+    User.findOne({userId: userId}, (err, userDoc) => {
+      if (err) {
+        res.json({
+          status: '1',
+          msg: res.message,
+          result: ''
+        });
+      } else {
+        if (userDoc) {
+          const addressList = userDoc.addressList;
+          addressList.forEach(item => {
+            if (item.addressId == addressId) {
+              item.isDefault = true;
+            } else {
+              item.isDefault = false;
+            }
+          });
+          userDoc.save((err, doc) => {
+            if (err) {
+              res.json({
+                status: '1',
+                msg: res.message,
+                result: ''
+              });
+            } else {
+              if (doc) {
+                res.json({
+                  status: '0',
+                  msg: 'success',
+                  result: 'set deafultAddress success'
+                });
+              }
+            }
+          });
+        }
+      }
+    });
+  }
+});
+
 module.exports = router;

@@ -15,7 +15,15 @@ const userSchema = new mongoose.Schema({
             'productNum': String
         }
     ],
-    'addressList': Array
+    'addressList': [
+        {
+            'addressId': String,
+            'userName': String,
+            'streetName': String,
+            'tel': Number,
+            'isDefault': Boolean
+        }
+    ]
 });
 
 module.exports = mongoose.model('User', userSchema);

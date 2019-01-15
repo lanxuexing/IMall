@@ -127,11 +127,11 @@
                     </a>
                   </div>
                   <div class="addr-opration addr-set-default">
-                    <a href="javascript:;" class="addr-set-default-btn">
+                    <a href="javascript:;" class="addr-set-default-btn" v-if="!item.isDefault" @click="setDefaultAddress(item.addressId)">
                       <i>Set default</i>
                     </a>
                   </div>
-                  <div class="addr-opration addr-default">Default address</div>
+                  <div class="addr-opration addr-default" v-if="item.isDefault">Default address</div>
                 </li>
                 <li class="addr-new">
                   <div class="add-new-inner">
@@ -234,6 +234,17 @@ export default {
       } else {
         this.limit = 3;
       }
+    },
+    // 设置默认收货地址
+    setDefaultAddress(addressId) {
+      axios.post('users/setDefaultAddress', {
+        addressId: addressId
+      }).then(response => {
+        const res = response.data;
+        if (res.status == '0') {
+          console.log(res.result);
+        }
+      });
     }
   }
 };
