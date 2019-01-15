@@ -163,7 +163,11 @@
                 <span class="total-price">{{totalPrice | currency('¥')}}</span>
               </div>
               <div class="btn-wrap">
-                <a class="btn btn--red">Checkout</a>
+                <a
+                  class="btn btn--red"
+                  v-bind:class="{'btn--dis': totalPrice=='0'}"
+                  @click="checkout"
+                >Checkout</a>
               </div>
             </div>
           </div>
@@ -213,7 +217,7 @@ export default {
     checkCount() {
       let num = 0;
       this.cartList.forEach(item => {
-        if (item.checked == '1') {
+        if (item.checked == "1") {
           num++;
         }
       });
@@ -222,7 +226,7 @@ export default {
     totalPrice() {
       let money = 0;
       this.cartList.forEach(item => {
-        if (item.checked == '1') {
+        if (item.checked == "1") {
           money += parseFloat(item.salePrice) * parseInt(item.productNum);
         }
       });
@@ -249,8 +253,8 @@ export default {
       this.modalConfirm = true;
       this.productId = productId;
     },
+    // 删除商品
     deleteCart() {
-      // 删除商品
       axios
         .post("/users/delCart", { productId: this.productId })
         .then(response => {
@@ -261,8 +265,8 @@ export default {
           }
         });
     },
+    // 编辑商品的数量
     editCart(flag, item) {
-      // 编辑商品的数量
       if (flag == "add") {
         item.productNum++;
       } else if (flag == "minu") {
@@ -272,7 +276,7 @@ export default {
           item.productNum--;
         }
       } else if (flag == "checked") {
-        item.checked == "1" ? item.checked = '-1' : item.checked = '1';
+        item.checked == "1" ? (item.checked = "-1") : (item.checked = "1");
       }
       axios
         .post("/users/cartEdit", {
@@ -287,19 +291,30 @@ export default {
           }
         });
     },
-    toggleCheckAll() { // 全选
+    // 全选
+    toggleCheckAll() {
       const checked = !this.checkAllFlag;
       this.cartList.forEach(item => {
-        item.checked = checked ? '1' : '0';
+        item.checked = checked ? "1" : "0";
       });
-      axios.post('/users/editCheckAll', {
-        checkAll: checked
-      }).then(response => {
-        const res = response.data;
-        if (res.status == '0') {
-          console.log(res.result);
-        }
-      });
+      axios
+        .post("/users/editCheckAll", {
+          checkAll: checked
+        })
+        .then(response => {
+          const res = response.data;
+          if (res.status == "0") {
+            console.log(res.result);
+          }
+        });
+    },
+    // 结账
+    checkout() {
+      if (this.checkCount > 0) {
+        this.$router.push({
+          path: "/address"
+        });
+      }
     }
   }
 };
