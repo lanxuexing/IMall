@@ -272,4 +272,43 @@ router.post('/setDefaultAddress', (req, res, next) => {
   }
 });
 
+// 删除地址
+router.post('/deleteAddress', (req, res, next) => {
+  const userId = req.cookies.userId;
+  const addressId = req.body.addressId;
+  if (!addressId) {
+    res.json({
+      status: '100003',
+      msg: 'addressId is null',
+      result: ''
+    });
+  } else {
+    User.update({
+      userId: userId
+    }, {
+      $pull: {
+        'addressList': {
+          'addressId': addressId
+        }
+      }
+    }, (err, userDoc) => {
+      if (err) {
+        res.json({
+          status: '1',
+          msg: res.message,
+          result: ''
+        });
+      } else {
+        if (userDoc) {
+          res.json({
+            status: '0',
+            msg: 'success',
+            result: 'delete address success'
+          });
+        }
+      }
+    });
+  }
+});
+
 module.exports = router;

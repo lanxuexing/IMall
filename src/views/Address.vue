@@ -113,21 +113,31 @@
           <div class="addr-list-wrap">
             <div class="addr-list">
               <ul>
-                <li v-for="(item, index) in addressListFilter" :key="index" v-bind:class="{'check': checkIndex == index}" @click="checkIndex=index">
+                <li
+                  v-for="(item, index) in addressListFilter"
+                  :key="index"
+                  v-bind:class="{'check': checkIndex == index}"
+                  @click="checkIndex=index"
+                >
                   <dl>
                     <dt>{{item.userName}}</dt>
                     <dd class="address">{{item.streetName}}</dd>
                     <dd class="tel">{{item.tel}}</dd>
                   </dl>
                   <div class="addr-opration addr-del">
-                    <a href="javascript:;" class="addr-del-btn">
+                    <a href="javascript:;" class="addr-del-btn" @click="openDeleteModal(item.addressId)">
                       <svg class="icon icon-del">
                         <use xlink:href="#icon-del"></use>
                       </svg>
                     </a>
                   </div>
                   <div class="addr-opration addr-set-default">
-                    <a href="javascript:;" class="addr-set-default-btn" v-if="!item.isDefault" @click="setDefaultAddress(item.addressId)">
+                    <a
+                      href="javascript:;"
+                      class="addr-set-default-btn"
+                      v-if="!item.isDefault"
+                      @click="setDefaultAddress(item.addressId)"
+                    >
                       <i>Set default</i>
                     </a>
                   </div>
@@ -147,7 +157,12 @@
             </div>
 
             <div class="shipping-addr-more">
-              <a class="addr-more-btn up-down-btn" href="javascript:;" v-bind:class="{'open': limit > 3}" @click="expand">
+              <a
+                class="addr-more-btn up-down-btn"
+                href="javascript:;"
+                v-bind:class="{'open': limit > 3}"
+                @click="expand"
+              >
                 more
                 <i class="i-up-down">
                   <i class="i-up-down-l"></i>
@@ -185,6 +200,13 @@
         </div>
       </div>
     </div>
+    <Modal :show="modalConfirm" @dismiss="closeModal">
+      <p slot="message">你确认要删除此地址吗</p>
+      <div slot="action">
+        <a href="javascript:void(0);" class="btn btn--m" @click="deleteAddress()">确认</a>
+        <a href="javascript:void(0);" class="btn btn--m" @click="modalConfirm = false">取消</a>
+      </div>
+    </Modal>
     <nav-footer/>
   </div>
 </template>
@@ -201,6 +223,8 @@ export default {
       limit: 3,
       addressList: [],
       checkIndex: 0,
+      modalConfirm: false,
+      addressId: ''
     };
   },
   components: {
@@ -237,12 +261,35 @@ export default {
     },
     // 设置默认收货地址
     setDefaultAddress(addressId) {
-      axios.post('users/setDefaultAddress', {
-        addressId: addressId
+      axios
+        .post("users/setDefaultAddress", {
+          addressId: addressId
+        })
+        .then(response => {
+          const res = response.data;
+          if (res.status == "0") {
+            this.init();
+          }
+        });
+    },
+    // 打开删除地址弹出框
+    openDeleteModal(addressId) {
+      this.modalConfirm = true;
+      this.addressId = addressId;
+    },
+    // 关闭删除地址弹出框
+    closeModal() {
+      this.modalConfirm = false;
+    },
+    // 删除地址
+    deleteAddress() {
+      this.modalConfirm = false;
+      axios.post('/users/deleteAddress', {
+        addressId: this.addressId
       }).then(response => {
         const res = response.data;
-        if (res.status == '0') {
-          this.init();
+        if (res.status == 0) {
+          console.log(res.result);
         }
       });
     }
