@@ -1,5 +1,6 @@
 <template>
   <div>
+    <NavHeader/>
     <nav-bread>
       <!-- 第一种方式 -->
       <span>OrderConfirm</span>
@@ -215,7 +216,6 @@ export default {
     // 创建订单
     payment() {
       const addressId = this.$route.query.addressId;
-      console.log("路由：", addressId);
       axios
         .post("/users/payment", {
           addressId: addressId,

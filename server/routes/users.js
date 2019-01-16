@@ -92,7 +92,7 @@ router.get('/cartList', (req, res, next) => {
     if (err) {
       res.json({
         status: '1',
-        msg: res.message,
+        msg: err.message,
         result: ''
       });
     } else {
@@ -123,7 +123,7 @@ router.post('/delCart', (req, res, next) => {
     if (err) {
       res.json({
         status: '1',
-        msg: res.message,
+        msg: err.message,
         result: ''
       });
     } else {
@@ -151,7 +151,7 @@ router.post('/cartEdit', (req, res, next) => {
     if (err) {
       res.json({
         status: '1',
-        msg: res.message,
+        msg: err.message,
         result: ''
       });
     } else {
@@ -172,7 +172,7 @@ router.post('/editCheckAll', (req, res, next) => {
     if (err) {
       res.json({
         status: '1',
-        msg: res.message,
+        msg: err.message,
         result: ''
       });
     } else {
@@ -184,7 +184,7 @@ router.post('/editCheckAll', (req, res, next) => {
           if (err) {
             res.json({
               status: '1',
-              msg: res.message,
+              msg: err.message,
               result: ''
             });
           } else {
@@ -237,7 +237,7 @@ router.post('/setDefaultAddress', (req, res, next) => {
       if (err) {
         res.json({
           status: '1',
-          msg: res.message,
+          msg: err.message,
           result: ''
         });
       } else {
@@ -254,7 +254,7 @@ router.post('/setDefaultAddress', (req, res, next) => {
             if (err) {
               res.json({
                 status: '1',
-                msg: res.message,
+                msg: err.message,
                 result: ''
               });
             } else {
@@ -296,7 +296,7 @@ router.post('/deleteAddress', (req, res, next) => {
       if (err) {
         res.json({
           status: '1',
-          msg: res.message,
+          msg: err.message,
           result: ''
         });
       } else {
@@ -321,7 +321,7 @@ router.post('/payment', (req, res, next) => {
     if (err) {
       res.json({
         status: '1',
-        msg: res.message,
+        msg: err.message,
         result: ''
       });
     } else {
@@ -360,7 +360,7 @@ router.post('/payment', (req, res, next) => {
           if (err) {
             res.json({
               status: '1',
-              msg: res.message,
+              msg: err.message,
               result: ''
             });
           } else {

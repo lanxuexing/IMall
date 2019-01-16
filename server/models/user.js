@@ -4,7 +4,31 @@ const userSchema = new mongoose.Schema({
     'userId': String,
     'userName': String,
     'userPwd': String,
-    'orderList': Array,
+    'orderList': [
+        {
+            'orderId': String,
+            'orderTotal': String,
+            'orderStatus': String,
+            'createDate': String,
+            'addressInfo': {
+                'addressId': String,
+                'userName': String,
+                'streetName': String,
+                'tel': Number,
+                'isDefault': Boolean
+            },
+            'goodsList': [
+                {
+                    'productId': String,
+                    'productName': String,
+                    'salePrice': Number,
+                    'checked': String,
+                    'productImage': String,
+                    'productNum': String
+                }
+            ]
+        }
+    ],
     'cartList': [
         {
             'productId': String,
