@@ -93,31 +93,35 @@
                 </ul>
               </div>
               <ul class="cart-item-list">
-                <li v-for="(item, index) in cartList" :key="index" v-if="item.checked == 1">
-                  <div class="cart-tab-1">
-                    <div class="cart-item-pic">
-                      <img v-bind:src="'/static/' + item.productImage" :alt="item.productName">
-                    </div>
-                    <div class="cart-item-title">
-                      <div class="item-name">{{item.productName}}</div>
-                    </div>
-                  </div>
-                  <div class="cart-tab-2">
-                    <div class="item-price">{{item.salePrice}}</div>
-                  </div>
-                  <div class="cart-tab-3">
-                    <div class="item-quantity">
-                      <div class="select-self">
-                        <div class="select-self-area">
-                          <span class="select-ipt">×{{item.productNum}}</span>
-                        </div>
+                <li v-for="(item, index) in cartList" :key="index">
+                  <template v-if="item.checked == 1">
+                    <div class="cart-tab-1">
+                      <div class="cart-item-pic">
+                        <img v-bind:src="'/static/' + item.productImage" :alt="item.productName">
                       </div>
-                      <div class="item-stock item-stock-no">In Stock</div>
+                      <div class="cart-item-title">
+                        <div class="item-name">{{item.productName}}</div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="cart-tab-4">
-                    <div class="item-price-total">{{item.salePrice * item.productNum | currency('¥')}}</div>
-                  </div>
+                    <div class="cart-tab-2">
+                      <div class="item-price">{{item.salePrice}}</div>
+                    </div>
+                    <div class="cart-tab-3">
+                      <div class="item-quantity">
+                        <div class="select-self">
+                          <div class="select-self-area">
+                            <span class="select-ipt">×{{item.productNum}}</span>
+                          </div>
+                        </div>
+                        <div class="item-stock item-stock-no">In Stock</div>
+                      </div>
+                    </div>
+                    <div class="cart-tab-4">
+                      <div
+                        class="item-price-total"
+                      >{{item.salePrice * item.productNum | currency('¥')}}</div>
+                    </div>
+                  </template>
                 </li>
               </ul>
             </div>
@@ -153,10 +157,10 @@
 
           <div class="order-foot-wrap">
             <div class="prev-btn-wrap">
-              <button class="btn btn--m">Previous</button>
+              <router-link class="btn btn--m" to="/address">Previous</router-link>
             </div>
             <div class="next-btn-wrap">
-              <button class="btn btn--m btn--red">Proceed to payment</button>
+              <button class="btn btn--m btn--red" @click="payment">Proceed to payment</button>
             </div>
           </div>
         </div>
@@ -175,12 +179,12 @@ import axios from "axios";
 export default {
   data() {
     return {
-        cartList: [],
-        shipping: 100,
-        discount: 200,
-        tax: 400,
-        subtotal: 0,
-        orderTotal: 0,
+      cartList: [],
+      shipping: 100,
+      discount: 200,
+      tax: 400,
+      subtotal: 0,
+      orderTotal: 0
     };
   },
   components: {
@@ -190,24 +194,40 @@ export default {
     NavFooter
   },
   mounted() {
-      this.init();
+    this.init();
   },
   methods: {
-      init() {
-          axios.get('/users/cartList').then(response => {
-              const res = response.data;
-              if (res.status == '0') {
-                  console.log(res.result);
-                  this.cartList = res.result;
-                  this.cartList.forEach(item => {
-                      if (item.checked == '1') {
-                          this.subtotal += item.salePrice * item.productNum;
-                      }
-                  });
-                  this.orderTotal = this.subtotal + this.shipping - this.discount + this.tax;
-              }
+    init() {
+      axios.get("/users/cartList").then(response => {
+        const res = response.data;
+        if (res.status == "0") {
+          this.cartList = res.result;
+          this.cartList.forEach(item => {
+            if (item.checked == "1") {
+              this.subtotal += item.salePrice * item.productNum;
+            }
           });
-      }
+          this.orderTotal =
+            this.subtotal + this.shipping - this.discount + this.tax;
+        }
+      });
+    },
+    // 创建订单
+    payment() {
+      const addressId = this.$route.query.addressId;
+      console.log("路由：", addressId);
+      axios
+        .post("/users/payment", {
+          addressId: addressId,
+          orderTotal: this.orderTotal
+        })
+        .then(response => {
+          const res = response.data;
+          if (res.status == "0") {
+            console.log(res.result);
+          }
+        });
+    }
   }
 };
 </script>

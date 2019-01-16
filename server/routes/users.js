@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+require('../utils/util');
 
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -309,6 +310,73 @@ router.post('/deleteAddress', (req, res, next) => {
       }
     });
   }
+});
+
+// 创建用户订单
+router.post('/payment', (req, res, next) => {
+  const userId = req.cookies.userId;
+  const addressId = req.body.addressId;
+  const orderTotal = req.body.orderTotal;
+  User.findOne({userId: userId}, (err, userDoc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: res.message,
+        result: ''
+      });
+    } else {
+      if (userDoc) {
+        // 获取用户的订单收货地址
+        let address = '';
+        userDoc.addressList.forEach(item => {
+          if (item.addressId == addressId) {
+            address = item;
+          }
+        });
+        const goodsList = [];
+        //  获取用户订单的商品
+        userDoc.cartList.filter(item => {
+          if (item.checked == '1') {
+            goodsList.push(item);
+          }
+        });
+        const platform = '168';
+        const randomNumOne = Math.floor(Math.random() * 10);
+        const randomNumTwo = Math.floor(Math.random() * 10);
+        const systemDate = new Date().Format('yyyyMMddhhmmss');
+        const currentDate = new Date().Format('yyyy-MM-dd hh:mm:ss');
+        const orderId = platform + randomNumOne + systemDate + randomNumTwo;
+        // 创建订单
+        const order = {
+          orderId: orderId,
+          orderTotal: orderTotal,
+          addressInfo: address,
+          goodsList: goodsList,
+          orderStatus: '1',
+          createDate: currentDate
+        };
+        userDoc.orderList.push(order);
+        userDoc.save((err, doc) => {
+          if (err) {
+            res.json({
+              status: '1',
+              msg: res.message,
+              result: ''
+            });
+          } else {
+            res.json({
+              status: '0',
+              msg: 'success',
+              result: {
+                orderId: order.orderId,
+                orderTotal: order.orderTotal
+              }
+            });
+          }
+        });
+      }
+    }
+  });
 });
 
 module.exports = router;
