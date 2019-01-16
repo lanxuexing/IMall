@@ -129,23 +129,23 @@
               <ul>
                 <li>
                   <span>Item subtotal:</span>
-                  <span>$2499</span>
+                  <span>{{subtotal | currency('¥')}}</span>
                 </li>
                 <li>
                   <span>Shipping:</span>
-                  <span>$100</span>
+                  <span>{{shipping | currency('¥')}}</span>
                 </li>
                 <li>
                   <span>Discount:</span>
-                  <span>$0</span>
+                  <span>{{discount | currency('¥')}}</span>
                 </li>
                 <li>
                   <span>Tax:</span>
-                  <span>$400</span>
+                  <span>{{tax | currency('¥')}}</span>
                 </li>
                 <li class="order-total-price">
                   <span>Order total:</span>
-                  <span>$1999</span>
+                  <span>{{orderTotal | currency('¥')}}</span>
                 </li>
               </ul>
             </div>
@@ -176,6 +176,11 @@ export default {
   data() {
     return {
         cartList: [],
+        shipping: 100,
+        discount: 200,
+        tax: 400,
+        subtotal: 0,
+        orderTotal: 0,
     };
   },
   components: {
@@ -194,6 +199,12 @@ export default {
               if (res.status == '0') {
                   console.log(res.result);
                   this.cartList = res.result;
+                  this.cartList.forEach(item => {
+                      if (item.checked == '1') {
+                          this.subtotal += item.salePrice * item.productNum;
+                      }
+                  });
+                  this.orderTotal = this.subtotal + this.shipping - this.discount + this.tax;
               }
           });
       }
