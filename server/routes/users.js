@@ -379,4 +379,53 @@ router.post('/payment', (req, res, next) => {
   });
 });
 
+// 根据订单ID查询订单详情
+router.get('/orderDetail', (req, res, next) => {
+  const userId = req.cookies.userId;
+  const orderId = req.query.orderId;
+  User.findOne({userId: userId}, (err, userDoc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      });
+    } else {
+      if (userDoc) {
+        const orderList = userDoc.orderList;
+        if (orderList.length > 0) {
+          const orderTotal = 0;
+          orderList.forEach(item => {
+            if (item.orderId == orderId) {
+              orderTotal = item.orderTotal;
+            }
+          });
+          if (orderTotal > 0) {
+            res.json({
+              status: '0',
+              msg: 'success',
+              result: {
+                orderId: orderId,
+                orderTotal: orderTotal
+              }
+            });
+          } else {
+            res.json({
+              status: '12002',
+              msg: 'No Order',
+              result: ''
+            });
+          }
+        } else {
+          res.json({
+            status: '12001',
+            msg: 'The current user did not create the order',
+            result: ''
+          });
+        }
+      }
+    }
+  });
+});
+
 module.exports = router;

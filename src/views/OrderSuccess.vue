@@ -40,8 +40,8 @@
             <br>Your order is under processing!
           </h3>
           <p>
-            <span>Order ID：100000001</span>
-            <span>Order total：1000</span>
+            <span>Order ID：{{orderId}}</span>
+            <span>Order total：{{orderTotal | currency('¥')}}</span>
           </p>
           <div class="order-create-btn-wrap">
             <div class="btn-l-wrap">
@@ -67,16 +67,37 @@ import NavFooter from "@/components/NavFooter";
 import axios from "axios";
 export default {
   data() {
-    return {};
+    return {
+      orderId: '',
+      orderTotal: 0
+    };
   },
-  mounted() {},
+  mounted() {
+    this.init();
+  },
   components: {
     NavHeader,
     NavBread,
     Modal,
     NavFooter
   },
-  methods() {}
+  methods: {
+    init() {
+      const orderId = this.$route.query.orderId;
+      if (!orderId) {
+        return;
+      }
+      const params = {orderId: orderId};
+      axios.get("/users/orderDetail", {params: params}).then(response => {
+        const res = response.data;
+        if (res.status == "0") {
+          console.log(res.result);
+          this.orderId = orderId;
+          this.orderTotal = res.result.orderTotal;
+        }
+      });
+    }
+  }
 };
 </script>
 
