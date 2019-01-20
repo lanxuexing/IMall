@@ -394,7 +394,7 @@ router.get('/orderDetail', (req, res, next) => {
       if (userDoc) {
         const orderList = userDoc.orderList;
         if (orderList.length > 0) {
-          const orderTotal = 0;
+          let orderTotal = 0;
           orderList.forEach(item => {
             if (item.orderId == orderId) {
               orderTotal = item.orderTotal;
