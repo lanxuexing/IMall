@@ -48,6 +48,8 @@ const userSchema = new mongoose.Schema({
             'isDefault': Boolean
         }
     ]
+}, {
+    usePushEach: true
 });
 
 module.exports = mongoose.model('User', userSchema);
