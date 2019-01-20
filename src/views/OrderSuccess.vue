@@ -45,10 +45,10 @@
           </p>
           <div class="order-create-btn-wrap">
             <div class="btn-l-wrap">
-              <a href="javascript:;" class="btn btn--m">Cart List</a>
+              <router-link class="btn btn--m" to="/cart">Cart List</router-link>
             </div>
             <div class="btn-r-wrap">
-              <a href="javascript:;" class="btn btn--m">Goods List</a>
+              <router-link class="btn btn--m" to="/">Goods List</router-link>
             </div>
           </div>
         </div>
