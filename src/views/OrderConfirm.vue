@@ -224,7 +224,9 @@ export default {
         .then(response => {
           const res = response.data;
           if (res.status == "0") {
-            console.log(res.result);
+            this.$router.push({
+              path: `/orderSuccess?orderId=${res.result.orderId}`
+            });
           }
         });
     }
