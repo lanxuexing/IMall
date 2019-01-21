@@ -94,6 +94,7 @@
 <script>
 import "../assets/css/login.css";
 import axios from "axios";
+import { mapState } from 'vuex';
 export default {
   data() {
     return {
@@ -115,12 +116,17 @@ export default {
     //     this.$store.commit('updateUserInfo', value);
     //   }
     // },
-    nickName() {
-      return this.$store.state.nickName;
-    },
-    cartCount() {
-      return this.$store.state.cartCount;
-    }
+    //第一种方式
+    // nickName() {
+    //   return this.$store.state.nickName;
+    // },
+    // cartCount() {
+    //   return this.$store.state.cartCount;
+    // }
+    // 第二种方式
+    ...mapState([
+      'nickName', 'cartCount'
+    ])
   },
   mounted() {
     this.checkLogin();
