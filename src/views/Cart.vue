@@ -128,11 +128,7 @@
                 </div>
                 <div class="cart-tab-5">
                   <div class="cart-item-opration">
-                    <a
-                      href="javascript:;"
-                      class="item-edit-btn"
-                      @click="deleteCartConfirm(item.productId)"
-                    >
+                    <a href="javascript:;" class="item-edit-btn" @click="deleteCartConfirm(item)">
                       <svg class="icon icon-del">
                         <use xlink:href="#icon-del"></use>
                       </svg>
@@ -198,7 +194,7 @@ export default {
     return {
       cartList: [],
       modalConfirm: false,
-      productId: ""
+      delProduct: "" // 即将删除的商品信息
     };
   },
   mounted() {
@@ -249,19 +245,21 @@ export default {
     closeModal() {
       this.modalConfirm = false;
     },
-    deleteCartConfirm(productId) {
+    deleteCartConfirm(item) {
       this.modalConfirm = true;
-      this.productId = productId;
+      this.delProduct = item;
     },
     // 删除商品
     deleteCart() {
       axios
-        .post("/users/delCart", { productId: this.productId })
+        .post("/users/delCart", { productId: this.delProduct.productId })
         .then(response => {
           const res = response.data;
           if (res.status == "0") {
             this.modalConfirm = false;
             this.init();
+            console.log("====", this.delProduct);
+            this.$store.commit("updateCartCount", -this.delProduct.productNum);
           }
         });
     },
@@ -288,6 +286,13 @@ export default {
           const res = response.data;
           if (res.status == "0") {
             console.log(res.result);
+            let num = 0;
+            if (flag == "add") {
+              num = 1;
+            } else if (flag == "minu") {
+              num = -1;
+            }
+            this.$store.commit("updateCartCount", num);
           }
         });
     },
