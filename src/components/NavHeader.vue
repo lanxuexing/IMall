@@ -170,6 +170,15 @@ export default {
           }
         }
       });
+    },
+    // 获取购物车数量
+    getCartCount() {
+      axios.get('/getCartCount').then(response => {
+        const res = response.data;
+        if (res.status == '0') {
+          this.$store.commit('updateCartCount', res.result);
+        }
+      });
     }
   }
 };
