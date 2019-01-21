@@ -443,7 +443,7 @@ router.get('/getCartCount', (req, res, next) => {
         if (userDoc) {
           const cartList = userDoc.cartList;
           let cartCount = 0;
-          cartList.forEach(item => {
+          cartList.map(item => {
             cartCount += parseInt(item.productNum);
           });
           res.json({
