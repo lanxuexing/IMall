@@ -36,8 +36,8 @@
           >Login</a>
           <a href="javascript:void(0)" class="navbar-link" @click="logout" v-if="nickName">Logout</a>
           <div class="navbar-cart-container">
-            <span class="navbar-cart-count">{{cartCount}}</span>
-            <a class="navbar-link navbar-cart-link" href="/#/cart">
+            <span class="navbar-cart-count" v-if="cartCount > 0">{{cartCount}}</span>
+            <a class="navbar-link navbar-cart-link" href="/cart">
               <svg class="navbar-cart-logo">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
               </svg>
@@ -107,13 +107,16 @@ export default {
   computed: {
     // 这里原来报错：Computed property "nickName" was assigned to but it has no setter.通过stackoverflow查阅之后找到答案，设置set和get
     // 原文地址：https://stackoverflow.com/questions/47460765/vuex-vue-warn-computed-property-username-was-assigned-to-but-it-has-no-set
-    nickName: {
-      get() {
-        return this.$store.state.nickName;
-      },
-      set(value) {
-        this.$store.commit('updateUserInfo', value);
-      }
+    // nickName: {
+    //   get() {
+    //     return this.$store.state.nickName;
+    //   },
+    //   set(value) {
+    //     this.$store.commit('updateUserInfo', value);
+    //   }
+    // },
+    nickName() {
+      return this.$store.state.nickName;
     },
     cartCount() {
       return this.$store.state.cartCount;
