@@ -100,7 +100,7 @@ export default {
       userName: "",
       userPwd: "",
       errorTip: false,
-      isLogin: false,
+      isLogin: false
       // nickName: "" // 用户昵称
     };
   },
@@ -143,7 +143,7 @@ export default {
             this.errorTip = false;
             this.isLogin = false;
             // this.nickName = res.result.userName;
-            this.$store.commit('updateUserInfo', res.result.userName);
+            this.$store.commit("updateUserInfo", res.result.userName);
             this.getCartCount();
           } else {
             this.errorTip = true;
@@ -157,7 +157,7 @@ export default {
         const res = response.data;
         if (res.status == "0") {
           // this.nickName = "";
-          this.$store.commit('updateUserInfo', '');
+          this.$store.commit("updateUserInfo", "");
         }
       });
     },
@@ -168,23 +168,23 @@ export default {
         const path = this.$route.pathname;
         if (res.status == "0") {
           // this.nickName = res.result;
-          this.$store.commit('updateUserInfo', res.result);
+          this.$store.commit("updateUserInfo", res.result);
           this.isLogin = false;
           this.getCartCount();
         } else {
           this.isLogin = true;
-          if (this.$route.path != '/') {
-            this.$router.push('/');
+          if (this.$route.path != "/") {
+            this.$router.push("/");
           }
         }
       });
     },
     // 获取购物车数量
     getCartCount() {
-      axios.get('/users/getCartCount').then(response => {
+      axios.get("/users/getCartCount").then(response => {
         const res = response.data;
-        if (res.status == '0') {
-          this.$store.commit('updateCartCount', res.result);
+        if (res.status == "0") {
+          this.$store.commit("initCartCount", res.result);
         }
       });
     }

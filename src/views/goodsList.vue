@@ -229,6 +229,7 @@ export default {
           if (res.status == 0) {
             this.modalShow = false;
             this.modalShowCart = true;
+            this.$store.commit("updateCartCount", 1);
           } else {
             this.modalShow = true;
           }
