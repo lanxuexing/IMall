@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import Vuex from 'vuex'
 import router from './router'
 import VueLazyload from 'vue-lazyload'
 import infiniteScroll from 'vue-infinite-scroll'
@@ -24,11 +25,28 @@ Vue.use(VueLazyload, {
 Vue.use(infiniteScroll)
 // 格式化金额管道
 Vue.filter('currency', currency);
+// 全局状态管理
+Vue.use(Vuex);
 
+const store = new Vuex.Store({
+  state: {
+    nickName: '',
+    cartCount: 0
+  },
+  mutations: {
+    updateUserInfo(state, nickName) {
+      state.nickName = nickName;
+    },
+    updateCartCount(state, cartCount) {
+      state.cartCount += cartCount;
+    }
+  }
+});
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'

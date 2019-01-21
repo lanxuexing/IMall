@@ -101,8 +101,20 @@ export default {
       userPwd: "",
       errorTip: false,
       isLogin: false,
-      nickName: "" // 用户昵称
+      // nickName: "" // 用户昵称
     };
+  },
+  computed: {
+    // 这里原来报错：Computed property "nickName" was assigned to but it has no setter.通过stackoverflow查阅之后找到答案，设置set和get
+    // 原文地址：https://stackoverflow.com/questions/47460765/vuex-vue-warn-computed-property-username-was-assigned-to-but-it-has-no-set
+    nickName: {
+      get() {
+        return this.$store.state.nickName;
+      },
+      set(value) {
+        this.$store.commit('updateUserInfo', value);
+      }
+    }
   },
   mounted() {
     this.checkLogin();
@@ -136,7 +148,8 @@ export default {
       axios.post("/users/logout").then(response => {
         const res = response.data;
         if (res.status == "0") {
-          this.nickName = "";
+          // this.nickName = "";
+          this.$store.commit('updateUserInfo', '');
         }
       });
     },
@@ -144,8 +157,17 @@ export default {
       // 登录校验
       axios.get("/users/checkLogin").then(response => {
         const res = response.data;
+        const path = this.$route.pathname;
         if (res.status == "0") {
-          this.nickName = res.result;
+          this.$store.commit('updateUserInfo', res.result);
+          this.isLogin = false;
+          // this.nickName = res.result;
+        } else {
+          this.isLogin = true;
+          console.log(this.$route.path);
+          if (this.$route.path != '/') {
+            this.$router.push('/');
+          }
         }
       });
     }

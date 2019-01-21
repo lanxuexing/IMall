@@ -1,10 +1,85 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vuex Demo03</title>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+  <script src="../node_modules/vuex/dist/vuex.js"></script>
 </head>
 <body>
+<div id="app">
+  <h2>{{msg}}</h2>
+  <counter></counter>
+  <button @click="add">增加</button>
+</div>
 
+<script>
+  const counter = {
+    template: `
+                <div>
+                  <p>{{ name }}</p>{{ count }}
+                  <div>{{ userName }}</div>
+                </div>
+            `,
+    computed: {
+      count() {
+        return this.$store.state.count;
+      },
+      name() {
+        return this.$store.state.name;
+      },
+      userName() {
+        return this.$store.getters.userName;
+      }
+    }
+  };
+  const store = new Vuex.Store({
+    state: {
+      count: 10,
+      name: 'Hello'
+    },
+    getters: {
+      userName(state) {
+        return state.name + ' Price Total: ';
+      }
+    },
+    mutations: {
+      increament(state, num) {
+        state.count += num;
+      },
+      updateName(state) {
+        state.name = state.name + ' World';
+      }
+    },
+    actions: {
+      increamentAction(context, num) {
+        context.commit("increament", num);
+      }
+    }
+  });
+  new Vue({
+    el: '#app',
+    store,
+    data() {
+      return {
+        msg: 'vuex的使用',
+        count: 15
+      }
+    },
+    components: {
+      counter
+    },
+    methods: {
+      add() {
+        this.$store.dispatch("increamentAction", 200);
+        this.$store.commit("updateName");
+      }
+    }
+  });
+</script>
 </body>
 </html>
+
