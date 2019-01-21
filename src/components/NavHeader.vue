@@ -36,7 +36,7 @@
           >Login</a>
           <a href="javascript:void(0)" class="navbar-link" @click="logout" v-if="nickName">Logout</a>
           <div class="navbar-cart-container">
-            <span class="navbar-cart-count"></span>
+            <span class="navbar-cart-count">{{cartCount}}</span>
             <a class="navbar-link navbar-cart-link" href="/#/cart">
               <svg class="navbar-cart-logo">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
@@ -114,6 +114,9 @@ export default {
       set(value) {
         this.$store.commit('updateUserInfo', value);
       }
+    },
+    cartCount() {
+      return this.$store.state.cartCount;
     }
   },
   mounted() {
@@ -136,7 +139,9 @@ export default {
           if (res.status == "0") {
             this.errorTip = false;
             this.isLogin = false;
-            this.nickName = res.result.userName;
+            // this.nickName = res.result.userName;
+            this.$store.commit('updateUserInfo', res.result.userName);
+            this.getCartCount();
           } else {
             this.errorTip = true;
             console.log(res.msg);
@@ -159,12 +164,12 @@ export default {
         const res = response.data;
         const path = this.$route.pathname;
         if (res.status == "0") {
+          // this.nickName = res.result;
           this.$store.commit('updateUserInfo', res.result);
           this.isLogin = false;
-          // this.nickName = res.result;
+          this.getCartCount();
         } else {
           this.isLogin = true;
-          console.log(this.$route.path);
           if (this.$route.path != '/') {
             this.$router.push('/');
           }
@@ -173,7 +178,7 @@ export default {
     },
     // 获取购物车数量
     getCartCount() {
-      axios.get('/getCartCount').then(response => {
+      axios.get('/users/getCartCount').then(response => {
         const res = response.data;
         if (res.status == '0') {
           this.$store.commit('updateCartCount', res.result);
